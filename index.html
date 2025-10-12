@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Try-On the Virtual Exhibition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --color-primary: #ec4899; /* pink-500 */
+        --color-secondary: #fce7f3; /* pink-100 */
+        --color-accent: #3b82f6; /* blue-500 */
+        --color-background: #f9fafb; /* gray-50 */
+        --color-text: #1f2937; /* gray-800 */
+        --color-text-muted: #6b7280; /* gray-500 */
+        --color-button: #ec4899;
+        --color-button-text: #ffffff;
+        --color-header: #1f2937;
+      }
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: var(--color-background);
+        color: var(--color-text);
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

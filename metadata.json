@@ -1,0 +1,7 @@
+{
+  "name": "Try-On the Virtual Exhibition",
+  "description": "An advanced virtual try-on system for a college exhibition. Students can upload or capture images, select and layer multiple fashion products simultaneously, customize the app's theme, and see AI-generated results instantly. Includes QR code support for easy mobile access.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
