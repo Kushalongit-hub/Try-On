@@ -2,8 +2,6 @@ declare global {
     interface ImportMeta {
         readonly env: {
             readonly VITE_GEMINI_API_KEY: string;
-            readonly VITE_POLLINATIONS_TOKEN: string;
-            readonly TOKEN: string;
         };
     }
 }
@@ -163,9 +161,6 @@ const generateWithPollinations = async (
     base64Image: string,
     productInfos: SelectedProductInfo[]
 ): Promise<string> => {
-    const token = import.meta.env.TOKEN || import.meta.env.VITE_POLLINATIONS_TOKEN;
-    if (!token) throw new Error("TOKEN is not set in .env file.");
-
     // Upload user image
     const userImageUrl = await uploadImageToPublicHost(base64Image);
     
@@ -206,7 +201,6 @@ const generateWithPollinations = async (
     const baseUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
     const params = new URLSearchParams({
         model: pollinationsModel,
-        token: token,
         private: 'true',
         nofeed: 'true',
         nologo: 'true',

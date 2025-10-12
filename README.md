@@ -119,7 +119,7 @@
 ### Prerequisites
 - Node.js (v18 or higher)
 - npm or yarn
-- API Keys (Pollinations Token, optional: Gemini API Key)
+- API Keys (optional: Gemini API Key for Gemini model)
 
 ### Step 1: Clone the Repository
 ```bash
@@ -135,17 +135,15 @@ yarn install
 ```
 
 
-### Step 3: Configure Environment Variables
-Create a `.env` file in the root directory:
+### Step 3: Configure Environment Variables (Optional)
+If you want to use Google Gemini model, create a `.env` file in the root directory:
 
 ```env
-# Pollinations AI Token (Required)
-TOKEN=your_pollinations_token_here
-VITE_POLLINATIONS_TOKEN=your_pollinations_token_here
-
-# Google Gemini API Key (Optional - for Gemini model)
+# Google Gemini API Key (Optional - only needed for Gemini model)
 VITE_GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
+Note: Pollinations AI models work without any API keys or tokens!
 
 ### Step 4: Start Development Server
 ```bash
@@ -178,9 +176,7 @@ yarn preview
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `TOKEN` | ✅ Yes | Pollinations AI authentication token |
-| `VITE_POLLINATIONS_TOKEN` | ✅ Yes | Pollinations AI token (Vite format) |
-| `VITE_GEMINI_API_KEY` | ❌ No | Google Gemini API key (for Gemini model) |
+| `VITE_GEMINI_API_KEY` | ❌ No | Google Gemini API key (only needed for Gemini model) |
 
 ### Vite Configuration
 The project uses Vite with the following configuration:
@@ -415,9 +411,8 @@ graph TD
     
     P --> Q[Construct Query Parameters]
     Q --> R[Add Model Selection]
-    R --> S[Add Token Authentication]
-    S --> T[Add Image References]
-    T --> U[Return Final URL]
+    R --> S[Add Image References]
+    S --> T[Return Final URL]
     
     U --> V[Set Generated Image]
     V --> W[Update State to RESULT]
@@ -1077,11 +1072,11 @@ vercel login
 vercel --prod
 ```
 
-4. **Set Environment Variables**
-Go to Vercel Dashboard → Project Settings → Environment Variables:
-- `TOKEN`
-- `VITE_POLLINATIONS_TOKEN`
-- `VITE_GEMINI_API_KEY` (optional)
+4. **Set Environment Variables (Optional)**
+If using Gemini model, go to Vercel Dashboard → Project Settings → Environment Variables:
+- `VITE_GEMINI_API_KEY` (only needed for Gemini model)
+
+Note: No environment variables needed for Pollinations AI models!
 
 ### Netlify Deployment
 
@@ -1120,7 +1115,7 @@ CMD ["npm", "run", "preview"]
 **Build and Run:**
 ```bash
 docker build -t try-on-app .
-docker run -p 3000:3000 -e TOKEN=your_token try-on-app
+docker run -p 3000:3000 try-on-app
 ```
 
 ---
@@ -1194,11 +1189,10 @@ docker run -p 3000:3000 -e TOKEN=your_token try-on-app
 **Problem:** No image generated or error message
 
 **Solutions:**
-1. Verify API token is set correctly in `.env`
-2. Check if token has expired
-3. Try different AI model
-4. Reduce number of selected products
-5. Use smaller/different input image
+1. Try different AI model
+2. Reduce number of selected products
+3. Use smaller/different input image
+4. Check browser console for specific errors
 
 #### Theme Not Persisting
 **Problem:** Theme resets on page reload
