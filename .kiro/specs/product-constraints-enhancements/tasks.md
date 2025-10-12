@@ -6,23 +6,27 @@
   - Ensure seed values remain in range [0, 2147483647]
   - _Requirements: 1.1, 1.6_
 
-- [ ] 2. Verify seed integration in Pollinations URL
+- [ ] 2. Enhance prompts for image integrity and natural quality
+  - Update `generateWithPollinations()` to include explicit instructions to preserve background and original features
+  - Add natural blending instructions to prompts (e.g., "naturally," "realistically," "seamlessly")
+  - Ensure prompts instruct AI to maintain photorealistic quality
+  - Keep prompts concise but explicit about preservation requirements
+  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
+
+- [ ] 3. Implement stage-specific loading messages
+  - Add state variable in App.tsx to track loading stage message
+  - Update `handleTryOn()` to set message to "Uploading your image..." at start
+  - Update message to "Generating your try-on result..." after upload completes
+  - Pass dynamic message to Spinner component
+  - Ensure loading screen matches current theme colors
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.9_
+
+- [ ] 4. Verify seed integration and retry mechanism
   - Confirm `generateUniqueSeed()` is called in `generateWithPollinations()`
   - Test that seed parameter is correctly included in the Pollinations API URL
-  - Validate URL construction with new seed function
-  - _Requirements: 1.5_
-
-- [ ] 3. Test retry mechanism generates new seeds
   - Verify `handleRetry()` in App.tsx triggers new seed generation
   - Confirm each retry produces a different seed value
-  - Test rapid successive retries for uniqueness
-  - _Requirements: 1.2, 1.3_
-
-- [ ] 4. Add seed logging for debugging
-  - Implement console.log with ISO 8601 timestamp
-  - Format log message as: `[Seed Generated] {seed} at {timestamp}`
-  - Ensure logs appear for initial generation and retries
-  - _Requirements: 1.4_
+  - _Requirements: 1.2, 1.3, 1.5_
 
 - [ ]* 5. Write unit tests for seed generation
   - Test seed range validation (0 to 2147483647)
@@ -31,8 +35,9 @@
   - Test logging output format
   - _Requirements: 1.1, 1.3, 1.6_
 
-- [ ]* 6. Write integration tests for seed usage
+- [ ]* 6. Write integration tests for complete workflow
   - Test seed appears in Pollinations URL
   - Test retry generates different seed
-  - Test multiple concurrent requests have unique seeds
-  - _Requirements: 1.2, 1.3, 1.5_
+  - Test loading messages appear at correct stages
+  - Test enhanced prompts maintain image integrity
+  - _Requirements: 1.2, 1.3, 1.5, 2.1, 3.4, 3.5_

@@ -2,13 +2,20 @@
 
 ## Overview
 
-This design implements a robust unique seed value generation system for the Try-On Virtual Exhibition app. The current implementation already generates random seeds using `Math.random()`, but this design enhances it to ensure true uniqueness across all requests, proper logging for debugging, and cryptographically secure random generation when available.
+This design implements three key enhancements for the Try-On Virtual Exhibition app:
+1. **Unique Seed Generation** - Cryptographically secure seed values for reproducibility
+2. **Image Integrity & Natural Quality** - Enhanced prompts to maintain original image authenticity
+3. **Loading Screen Experience** - Clear user feedback during image generation
+
+The current implementation already has basic seed generation and a loading state, but this design enhances them to ensure true uniqueness, better image quality through improved prompts, and a more informative loading experience.
 
 The enhancement focuses on:
 1. Upgrading the seed generation function to use cryptographically secure randomness
-2. Adding seed tracking and logging for reproducibility
-3. Ensuring each retry/regeneration gets a new unique seed
-4. Maintaining backward compatibility with the existing Pollinations API integration
+2. Enhancing AI prompts to explicitly preserve image integrity and produce natural results
+3. Improving loading screen with stage-specific messages
+4. Adding seed tracking and logging for reproducibility
+5. Ensuring each retry/regeneration gets a new unique seed
+6. Maintaining backward compatibility with the existing Pollinations API integration
 
 ## Architecture
 
@@ -265,14 +272,109 @@ console.warn('[Seed Fallback] Using timestamp-based seed:', fallbackSeed);
 - Add "Regenerate with same seed" option
 - Useful for testing and comparison
 
+## Image Integrity and Natural Quality Design
+
+### Current Prompt Analysis
+
+The existing prompt generation in `createGeminiPrompt()` and `generateWithPollinations()` creates basic prompts like:
+- "apply Crimson Red lipstick"
+- "wearing Aviator Black sunglasses"
+
+These prompts lack explicit instructions to preserve image integrity and ensure natural blending.
+
+### Enhanced Prompt Strategy
+
+**Key Principles:**
+1. **Preserve Background** - Explicitly instruct AI not to modify background
+2. **Maintain Features** - Keep facial features, skin tone, and overall appearance
+3. **Natural Blending** - Ensure products blend seamlessly without harsh edges
+4. **Realistic Application** - Use descriptive terms like "naturally," "realistically," "seamlessly"
+
+**Enhanced Prompt Template:**
+```typescript
+const enhancedPrompt = `
+Apply ${productDescription} to the person naturally and realistically.
+Preserve the original background, facial features, and skin tone.
+Blend the product seamlessly without harsh edges or artifacts.
+Maintain photorealistic quality and natural appearance.
+`.trim();
+```
+
+**Implementation Location:**
+- Update `generateWithPollinations()` to include integrity instructions in the prompt
+- Keep prompts concise but explicit about preservation requirements
+
+### Pollinations API Parameters
+
+Current parameters are already optimal:
+- `width=1024&height=1024` - High quality output
+- `private=true&nofeed=true&nologo=true` - Clean results
+
+No changes needed to API parameters.
+
+## Loading Screen Design
+
+### Current State
+
+The app already has a `PROCESSING` state that shows a `Spinner` component with a message. However, the message is static and doesn't reflect the current stage of processing.
+
+### Enhanced Loading Experience
+
+**Loading Stages:**
+1. **Upload Stage** - "Uploading your image to hosting service..."
+2. **Generation Stage** - "Generating your try-on result with AI..."
+
+**Implementation Strategy:**
+
+**Option 1: Update Spinner Message Dynamically**
+- Pass different messages to `Spinner` component based on processing stage
+- Simplest approach, minimal code changes
+
+**Option 2: Enhanced Loading Component**
+- Create a new `LoadingScreen` component with stage indicators
+- Show progress steps visually
+- More polished but requires new component
+
+**Recommended: Option 1** (simpler, faster to implement)
+
+**Implementation:**
+```typescript
+// In App.tsx handleTryOn()
+setAppState('PROCESSING');
+setLoadingMessage('Uploading your image...');
+
+// After upload completes
+setLoadingMessage('Generating your try-on result...');
+```
+
+**Spinner Component Enhancement:**
+- Already accepts `message` prop
+- Already displays centered with theme colors
+- No structural changes needed, just pass dynamic messages
+
+### Loading Screen Behavior
+
+**User Interaction:**
+- Disable all buttons during loading (already implemented via state check)
+- Show spinner with animated rotation (already implemented)
+- Display stage-specific message (new enhancement)
+- Match current theme colors (already implemented)
+
+**Error Handling:**
+- If upload fails, show error and return to IMAGE_SELECTED state
+- If generation fails, show error and return to IMAGE_SELECTED state
+- Error messages already implemented in App.tsx
+
 ## Summary
 
-This design enhances the existing seed generation system with:
-- ✅ Cryptographically secure randomness
-- ✅ Proper logging for debugging
+This design enhances the existing system with:
+- ✅ Cryptographically secure randomness for seed generation
+- ✅ Proper logging for debugging and reproducibility
 - ✅ Guaranteed uniqueness across retries
+- ✅ Enhanced prompts for image integrity and natural quality
+- ✅ Stage-specific loading messages for better UX
 - ✅ Backward compatibility
 - ✅ Minimal performance impact
-- ✅ Simple implementation (single function update)
+- ✅ Simple implementation (focused updates to existing functions)
 
-The implementation is straightforward, non-breaking, and provides immediate value for reproducibility and debugging.
+The implementation is straightforward, non-breaking, and provides immediate value for reproducibility, image quality, and user experience.
