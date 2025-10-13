@@ -49,9 +49,6 @@ const Header: React.FC<{ onThemeClick: () => void; onQRCodeClick: () => void; }>
 
 const Footer = () => (
     <footer className="text-center p-4 mt-8">
-        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-            Made by Trust it | members: Kushal M Anverkar, Mohanmad Affan, Arsh Irfan & Sreerevanth
-        </p>
     </footer>
 );
 
