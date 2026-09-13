@@ -123,7 +123,7 @@
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/yourusername/try-on-virtual-exhibition.git
+git clone https://github.com/Kushalongit-hub/try-on-virtual-exhibition.git
 cd try-on-virtual-exhibition
 ```
 
